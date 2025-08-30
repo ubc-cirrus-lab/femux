@@ -48,7 +48,7 @@ def plot_hashapp(hashapp):
     plt.yticks([0,1,2])
     plt.ylabel("Concurrency")
     plt.tight_layout()
-    plt.savefig(output_plots_dir + "sec_1_switching.pdf")
+    plt.savefig(output_plots_dir + "sec_4_switching.pdf")
 
     for i, forecaster in enumerate(["MarkovChain_v3", "5_min_keepalive"]):
         plt.subplot(3,1,i+2)
@@ -66,7 +66,7 @@ def plot_hashapp(hashapp):
         if i == 1:
             plt.xlabel("Time (m)")
         plt.tight_layout()
-        plt.savefig(output_plots_dir + "sec_1_switching.pdf".format(hashapp[:5]))
+        plt.savefig(output_plots_dir + "sec_4_switching.pdf".format(hashapp[:5]))
     
     plt.close()
 

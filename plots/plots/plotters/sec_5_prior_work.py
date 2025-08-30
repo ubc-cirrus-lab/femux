@@ -10,7 +10,7 @@ plt.rcParams["pdf.fonttype"] = 42
 data_dir = str(Path(__file__).parents[2] / "data") + "/"
 output_plots_dir = str(Path(__file__).parents[1] / "output_plots") + "/"
 
-file_name = output_plots_dir + "sec_6_prior_work_{}.pdf"
+file_name = output_plots_dir + "sec_5_prior_work_{}.pdf"
 faascache_results_path = data_dir + "faascache_data/{}_results.pickle"
 
 

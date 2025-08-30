@@ -263,5 +263,5 @@ if __name__ == "__main__":
     ax.yaxis.labelpad = 0
 
     plt.tight_layout()
-    plt.savefig(output_plots_dir + "sec_6_simul_RUMs.pdf", bbox_inches="tight")
+    plt.savefig(output_plots_dir + "sec_5_simul_RUMs.pdf", bbox_inches="tight")
     plt.close()
