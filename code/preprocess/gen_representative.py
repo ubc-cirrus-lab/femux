@@ -29,6 +29,6 @@ def get_percentile_rows(percentile_list, data_filepath, save_filepath):
     print(percentiles_df)
     percentiles_df.to_pickle(save_filepath)
 
-data_filepath = "../data/preproc_data/invocation_data/preprocessed_data_00.pckl"
-save_filepath = "../transform/percentiles.pckl"
+data_filepath = "../../data/preproc_data/invocation_data/preprocessed_data_00.pckl"
+save_filepath = "../../data/preproc_data/representative_data.pckl"
 get_percentile_rows([50,90,95,99], data_filepath, save_filepath)

@@ -4,19 +4,16 @@ import pandas as pd
 import sys
 from math import isclose
 from time import time
-from post_processing import get_combined_transformed_and_forecasted_values, convert_it_forecast_to_avg_conc
+from post_processing import get_combined_transformed_and_forecasted_values
 from statsmodels.tsa.ar_model import AutoReg
 from statsmodels.tsa.statespace.exponential_smoothing import ExponentialSmoothing
 from statsmodels.tsa.api import SimpleExpSmoothing
 from collections import deque
 from sim_interface import SimulatorInterface
 from forecasters import setar_model
-#from darts.models import FFT
-#from darts import TimeSeries
 from forecasters.Forecaster_MarkovChain import Forecaster_MarkovChain
 from markov_chain import MarkovChainRadical
 from forecasters.Forecaster_IceBreaker import fourierExtrapolation
-from tuned_exp_smoothing import TunedForecaster
 
 sys.path.append("..")
 from forecasting.forecasting_sim_utils import gen_obj_val
@@ -35,12 +32,11 @@ STATIC_KEEPALIVE_WINDOW = 10
 # referenced for ExpSmoothing/Holt https://stats.stackexchange.com/questions/475749/how-to-update-an-exponentialsmoothing-model-on-new-data-without-refitting
 
 class ForecastSimulation(SimulatorInterface):
-    def __init__(self, forecaster, weight_mode="default", param=None, forecast_len=1, num_past_elements=120, block_size=504, func_mode = False, data_mode="concurrency"):
+    def __init__(self, forecaster, weight_mode="default", param=None, forecast_len=1, num_past_elements=120, block_size=504, data_mode="concurrency"):
         self.forecast_len = forecast_len
         self.forecaster = forecaster
         self.num_past_elements = num_past_elements
         self.block_size = block_size
-        self.func_mode = func_mode
         self.default_param = param
         self.weight_mode = weight_mode
         self.idletime_mode = data_mode == "idletime"
@@ -86,9 +82,6 @@ class ForecastSimulation(SimulatorInterface):
         result = pd.concat(results)
         result.reset_index(drop=True, inplace=True)
         
-        if self.func_mode:
-            result = get_combined_transformed_and_forecasted_values(result, self.forecast_len)
-
         result.drop("TransformedValues", axis=1, inplace=True)
 
         return result
@@ -112,57 +105,6 @@ class ForecastSimulation(SimulatorInterface):
         """
         if traces_df.shape[0] == 0:
             return traces_df
-
-        if self.func_mode and self.idletime_mode:
-            raise Exception("Idletime not supported for func-level forecasts")
-            
-        if self.func_mode:
-            # get each application
-            fcastmat = []
-            app_level_transformed_values = []
-            for curr_app in traces_df['HashApp'].unique():
-                curr_df = traces_df[traces_df['HashApp'] == curr_app]
-                per_app_transformed_values = [0]*len(curr_df.at[curr_df.index.tolist()[0], 'TransformedValues'])
-                for _, row in curr_df.iterrows():
-                    for i in range(len(row.TransformedValues)):
-                        per_app_transformed_values[i] = max(per_app_transformed_values[i], row.TransformedValues[i])
-                app_level_transformed_values.append(per_app_transformed_values)
-            for curr_app in traces_df['HashApp'].unique():
-                app_df = traces_df[traces_df['HashApp'] == curr_app]
-                forecasted_matrix = []   
-                # iterate over each function inside an app
-                for _, row in app_df.iterrows():
-                    # perform forecasting across all functions inside the application
-                    forecasted_mat = self.forecast_trace(row.TransformedValues,
-                                        self.forecaster, row.AverageMemUsage, row.ContainerInvocationsPerMin,
-                                        row.ExecDurations)
-                    # append both forecasted values at each index and future values at each index per function
-                    forecasted_matrix.append(forecasted_mat)
-                
-                app_forecasted_values = []
-                # outer loop for iterating over the number of times values are forecasted
-                for i in range(len(forecasted_matrix[0])):
-                    local_app_forecasted_values = []
-                    # inner loop for iterating over the forecast horizon
-                    for j in range(len(forecasted_matrix[0][0])):
-                        max_fcast_per_col = 0
-                        # inner most loop for iterating over all functions inside the app
-                        for k in range(len(forecasted_matrix)):
-                            # max value for a single function, at an index of the forecast horizon (e.g. 5)
-                            # and for an index among the total number of times forecast has happend e.g. 20035
-                            max_fcast_per_col = max(max_fcast_per_col, forecasted_matrix[k][i][j])
-                        local_app_forecasted_values.append(max_fcast_per_col)
-                    app_forecasted_values.append(local_app_forecasted_values)
-                fcastmat.append(app_forecasted_values)
-            all_apps = [app_name for app_name in traces_df['HashApp'].unique()]
-            new_df = pd.DataFrame()
-            new_df['HashApp'] = all_apps
-            new_df['ForecastedValues'] = fcastmat
-            new_df['ForecastedValues'] = new_df.ForecastedValues.apply(lambda x : np.array(x))
-            new_df['TransformedValues'] = app_level_transformed_values
-            new_df['Forecaster'] = self.forecaster
-            new_df.reset_index(drop=True, inplace=True)
-            return new_df
           
         traces_df["ForecastedValues"] = traces_df.apply(lambda x : self.forecast_trace(x.TransformedValues,
                                                             self.forecaster, x.AverageMemUsage, 

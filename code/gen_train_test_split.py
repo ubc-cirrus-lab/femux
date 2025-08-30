@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import pickle
 
-data_path = "../data/azure/transformed_data/concurrency/app/{}_app_conc_00.pickle"
+data_path = "../data/azure/transformed_data/concurrency/{}_app_conc_00.pickle"
 train_save_path = "../data/azure/train_test_split/{}_training_apps.pickle"
 test_save_path = "../data/azure/train_test_split/{}_test_apps.pickle"
 

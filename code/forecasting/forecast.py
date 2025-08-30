@@ -17,8 +17,8 @@ warnings.filterwarnings("ignore")
 
 conc_forecast_path = "../../data/azure/forecaster_data/concurrency/conc_forecast_00.pickle"
 idletime_forecast_path = "../../data/azure/forecaster_data/idletime/idletime_forecast_00.pickle"
-conc_path = "../../data/azure/transformed_data/concurrency/app/app_conc_00.pickle"
-idletime_path = "../../data/azure/transformed_data/container_idletime/app/app_idle_00.pickle"
+conc_path = "../../data/azure/transformed_data/concurrency/app_conc_00.pickle"
+idletime_path = "../../data/azure/transformed_data/container_idletime/app_idle_00.pickle"
 
 def forecast(forecaster, forecast_len, forecast_param, data, num_workers, mode, app_size, data_split, proportion, timestep=1, timestep_mode="avg",
             weight_mode="default"):
@@ -80,20 +80,6 @@ def set_paths(mode, data, app_size, timestep, timestep_mode, forecast_len,
               forecaster, forecast_param, weight_mode):
     print("Forecasting {} data".format(data))
 
-    if data == "ibm":
-        data_path = conc_path.replace("azure", "ibm")
-        save_path = conc_forecast_path.replace("azure", "ibm")
-        save_path = save_path.replace("forecast_", "forecast_{}".format(forecaster))
-        num_files = 1
-        
-        sim = ForecastSimulation(forecaster, forecast_param, forecast_len=forecast_len, num_past_elements=120, 
-                                func_mode=False)
-        
-        return data_path, save_path, num_files, sim
-
-
-    func_mode = "FFT" in forecaster and mode == "concurrency"
-
     if mode == "concurrency":
         data_path = conc_path
         save_path = conc_forecast_path
@@ -124,14 +110,10 @@ def set_paths(mode, data, app_size, timestep, timestep_mode, forecast_len,
     elif app_size == "large":
         num_files = NUM_LARGE_CHUNKS
 
-    if func_mode:
-        data_path = data_path.replace("app", "func")
-        print("Running sim in func mode")
-
     forecast_window = FFT_WINDOW if forecaster == "IceBreaker" else forecast_window
 
     sim = ForecastSimulation(forecaster, weight_mode, forecast_param, forecast_len=forecast_len, num_past_elements=forecast_window, 
-                                func_mode=func_mode, data_mode=mode)
+                                data_mode=mode)
 
     return data_path, save_path, num_files, sim
 

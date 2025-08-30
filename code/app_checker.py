@@ -4,9 +4,9 @@ import numpy as np
 preproc_path = "../data/azure/preproc_data/invocation_data/preprocessed_data_00.pickle"
 
 func_event_path = "../data/azure/transformed_data/conc_events/func/small_func_conc_events_00.pickle"
-app_event_path = "../data/azure/transformed_data/conc_events/app/medium_app_conc_events_00.pickle"
+app_event_path = "../data/azure/transformed_data/conc_events/medium_app_conc_events_00.pickle"
 func_conc_path = "../data/azure/transformed_data/concurrency/func/small_func_conc_00.pickle"
-app_conc_path = "../data/azure/transformed_data/concurrency/app/{}_app_conc_{:02d}.pickle"
+app_conc_path = "../data/azure/transformed_data/concurrency/{}_app_conc_{:02d}.pickle"
 invocation_path = "../data/azure/preproc_data/invocation_data/preprocessed_data_{:02d}.pickle"
 
 forecaster_data = "../data/azure/forecaster_data/concurrency/conc_{}_forecast_{}_{:02d}.pickle"

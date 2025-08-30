@@ -1,0 +1,1 @@
+Make sure to run `pdfcrop` command on figures made by the scripts to crop any marginal whitespace.

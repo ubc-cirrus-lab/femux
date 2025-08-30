@@ -9,9 +9,9 @@ from container_idletime_transformer import ContainerIdleTimeTransformer
 from utils import load_balance
 
 preproc_data_path = "../../data/azure/preproc_data/invocation_data/preprocessed_data_00.pickle"
-conc_event_path = "../../data/azure/transformed_data/conc_events/app/_app_conc_events_00.pickle"
-conc_save_path = "../../data/azure/transformed_data/concurrency/app/_app_conc_00.pickle"
-idletime_save_path = "../../data/azure/transformed_data/container_idletime/app/_app_idle_00.pickle"
+conc_event_path = "../../data/azure/transformed_data/conc_events/_app_conc_events_00.pickle"
+conc_save_path = "../../data/azure/transformed_data/concurrency/_app_conc_00.pickle"
+idletime_save_path = "../../data/azure/transformed_data/container_idletime/_app_idle_00.pickle"
 
 invocation_path = "../../data/azure/forecaster_data/invocations/{}_forecasts_00.pickle"
 invocation_event_path = "../../data/azure/transformed_data/conc_events/{}_{}_conc_events_00.pickle"
@@ -24,7 +24,7 @@ NUM_MED_FILES = 4
 NUM_LARGE_FILES = 1
 NUM_PREPROC_FILES = 40
 
-os.makedirs("../../data/azure/transformed_data/conc_events/app/", exist_ok=True)
+os.makedirs("../../data/azure/transformed_data/conc_events/", exist_ok=True)
 
 def transform(num_workers, num_days, mode, size_filter, invocation_mode=False, forecaster="", func_mode=False):
     """Combines all invocations counts and execution durations into their respective lists.
@@ -328,5 +328,8 @@ def fix_gaps(dfs, num_workers):
 
 
 if __name__ == '__main__':   
-    for size in ["medium", "large"]:
-        transform(15, 14, "idletime", size, func_mode=False)
+    for size in ["small","medium", "large"]:
+        transform(48, 14, "event", size)
+    
+    for size in ["small","medium", "large"]:
+        transform(48, 14, "concurrency", size)

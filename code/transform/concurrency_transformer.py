@@ -2,9 +2,8 @@ import logging
 import sys
 import pandas as pd
 import numpy as np
-from transform.transformer_interface import TransformerInterface
 from time import strftime
-from transform.utils import gen_events
+from utils import gen_events
 
 #logging.basicConfig(filename='transformers.log', encoding='utf-8', level=logging.DEBUG, filemode='w')
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
@@ -13,7 +12,7 @@ SECONDS_PER_MINUTE = 60
 MINUTES_PER_DAY = 1440
 
 
-class ConcurrencyTransformer(TransformerInterface):   
+class ConcurrencyTransformer:   
     def transform(self, event_df, num_seconds, timestep=60):
         """ Transform concurrency events to average concurrency per 
         timestep (e.g., 60 seconds)

@@ -12,7 +12,7 @@ from results.utils import init_df, add_mem_values
 data_dir = str(Path(__file__).resolve().parents[2] / "data" / "azure") + "/"
 
 invocation_data = data_dir + "preproc_data/invocation_data/preprocessed_data_{:02d}.pickle"
-transformed_data = data_dir + "transformed_data/concurrency/app/small_app_conc_{:02d}.pickle"
+transformed_data = data_dir + "transformed_data/concurrency/small_app_conc_{:02d}.pickle"
 
 parsed_singlefunc_path = data_dir + "knative_deployment_data/parsed_singlefunc_data.pickle"
 parsed_app_data_path = data_dir + "knative_deployment_data/parsed_app_data.pickle"

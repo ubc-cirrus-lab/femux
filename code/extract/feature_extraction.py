@@ -181,6 +181,6 @@ if __name__ == "__main__":
     feature_types = ["Density", "Linearity", "Stationarity", "Harmonics"]
 
     FUNC_PATH = "../../data/azure/transformed_data/concurrency/func/"
-    PATH = "../../data/azure/transformed_data/concurrency/app/" 
+    PATH = "../../data/azure/transformed_data/concurrency/" 
     
     dppd.process_transformed_traces(PATH, FUNC_PATH, feature_types)

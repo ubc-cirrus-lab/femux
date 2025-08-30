@@ -21,7 +21,7 @@ class TestForecastingSim(unittest.TestCase):
 
 
     def test_trace(self):
-        transformed_df = pd.read_pickle("../../data/transformed_data/concurrency/app/small_app_conc_24.pckl")
+        transformed_df = pd.read_pickle("../../data/transformed_data/concurrency/small_app_conc_24.pckl")
 
         transformed_df = transformed_df.loc[transformed_df["HashApp"] == "9b2bd0f58aef25792ae59bd5e104de15f171ca2b0f9ea71e7851bce173d58e3e"]
         print(transformed_df)

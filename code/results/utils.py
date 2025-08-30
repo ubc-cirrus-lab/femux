@@ -11,7 +11,7 @@ from pathlib import Path
 
 data_dir = str(Path(__file__).resolve().parents[2] / "data") + "/azure/"
 
-transformed_data_path = data_dir + "transformed_data/concurrency/app/small_app_conc_00.pickle"
+transformed_data_path = data_dir + "transformed_data/concurrency/small_app_conc_00.pickle"
 memory_data_path = data_dir + "preproc_data/memory_data.pickle"
 exec_time_path = data_dir + "preproc_data/app_exec_time_data.pickle"
 forecaster_data_path = data_dir + "forecaster_data/concurrency/conc_small_forecast_AR_00.pickle"
