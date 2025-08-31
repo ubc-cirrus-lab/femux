@@ -109,7 +109,7 @@ class ForecastSimulation(SimulatorInterface):
         traces_df["ForecastedValues"] = traces_df.apply(lambda x : self.forecast_trace(x.TransformedValues,
                                                             self.forecaster, x.AverageMemUsage, 
                                                             x.ContainerInvocationsPerMin,
-                                                            x.ExecDurations, x.HashApp), axis=1)
+                                                            x.ExecDurations), axis=1)
 
         traces_df["Forecaster"] = self.forecaster
 

@@ -5,6 +5,18 @@ import os
 from numba import jit
 import numpy as np
 
+# sys.path.append("../../../../plotters")
+# from superimposed_ftrace_plot import SuperImposedFtracePlot
+# from mae_plotter import MaePlot
+# from single_forecast_plot import SingleForecastPlot
+
+# def distance_calculator_rmse(state_a, state_b):
+#     rmse = 0
+#     for i in range(len(state_a)):
+#         rmse += (state_a[i] - state_b[i])**2
+#     return (rmse / len(state_a)) ** (0.5)
+
+
 @jit
 def trace_scaling(trace):
         scaled_trace = np.zeros(len(trace))
@@ -19,8 +31,7 @@ def trace_scaling(trace):
 
 
 class MarkovChainRadical:
-    def __init__(self, trainingSet, state_combinations) -> None:
-        self.state_combinations = state_combinations
+    def __init__(self, trainingSet) -> None:
         self.max_pod_change_pos = 1
         self.max_pod_change_neg = 1
         self.max_frequency = 1
@@ -31,19 +42,16 @@ class MarkovChainRadical:
         self.frequencies = [1]
         self.states = []
         self.all_vector_states = []
-        self.discovered_states = 0
         # detrend for mc
         # quantize values in the trace to reduce number of states
         # detrendTrainingSet = [self.trace_scaling(elem) for elem in detrendTrainingSet]
-        scaled_detrendTrainingSet = trace_scaling([float(i) for i in trainingSet])
+        scaled_detrendTrainingSet = trace_scaling(trainingSet)
         self.trainMarkovChain(scaled_detrendTrainingSet)
         # important to reset this after training and before forecasting
         self.default_change_sign()
         self.min_elements_for_one_state = 2
         self.isDirty = False
-        self.pvs = {}
-        for state_name in self.state_combinations:
-            self.pvs[state_name] = 0
+        self.pvs = [0, 0, 0, 0]
 
         self.state_transition_adjacency_list = [{} for _ in range(len(self.all_vector_states))]
         self.state_transition_sum_list = [0 for _ in range(len(self.all_vector_states))]
@@ -145,23 +153,11 @@ class MarkovChainRadical:
         return trace[-1]
 
     def vectorize_states(self, trace):
-        new_state = {}
-        for state_name in self.state_combinations:
-            if state_name == "pod_change":
-                pod_change = self.check_difference_in_pods(trace)
-                new_state[state_name] = pod_change
-            elif state_name == "pod_frequency":
-                pod_frequency = self.check_current_change_frequency(trace)
-                new_state[state_name] = pod_frequency
-            elif state_name == "pod_count":
-                pod_count = self.check_real_pod_count(trace)
-                new_state[state_name] = pod_count
-            elif state_name == "scale_sign":
-                sign_change = self.check_scale_sign(trace)
-                new_state[state_name] = sign_change
-            else:
-                raise ValueError("Invalid state name")
-        return new_state
+        pod_count_state = self.check_real_pod_count(trace)  # P
+        frequency_state = self.check_current_change_frequency(trace)  # I
+        scale_state = self.check_difference_in_pods(trace)  # D
+        scale_sign = self.check_scale_sign(trace)
+        return [scale_state, frequency_state, pod_count_state, scale_sign]
 
     def forecast(self, forecast_window, prev_vector_state):
         i = 0
@@ -184,10 +180,10 @@ class MarkovChainRadical:
                 ]
 
             # using pod count
-            new_element_1 = vector_element["pod_count"]
+            new_element_1 = vector_element[2]
 
-            # # using pod change
-            # new_element_2 = prev_vector_state[2] + vector_element[0]
+            # using pod change
+            new_element_2 = prev_vector_state[2] + vector_element[0]
             new_element = new_element_1
 
             prev_vector_state = vector_element
@@ -199,30 +195,16 @@ class MarkovChainRadical:
 
     def trainMarkovChain(self, trace):
         for i in range(len(trace)-1):
-            new_vector_state = self.get_cur_state_combination_vector(trace, i)
-            # new_vector_state = [pod_change, pod_frequency, pod_count, sign_change]
+            pod_frequency = self.discrete_frequency(trace, i)
+            # pod_change = self.discrete_pod_change(trace, i)
+            # pod_count = self.discrete_pod_count(trace, i)
+            # inlining the above two functions for efficiency
+            pod_change = trace[i+1] - trace[i]
+            pod_count = trace[i+1]
+            sign_change = self.discrete_scale_sign(trace, i)
+            new_vector_state = [pod_change, pod_frequency, pod_count, sign_change]
             if new_vector_state not in self.all_vector_states:
                 self.all_vector_states.append(new_vector_state)
-                self.discovered_states += 1
-    
-    def get_cur_state_combination_vector(self, trace, i):
-        vector_state = {}
-        for state_name in self.state_combinations:
-            if state_name == "pod_change":
-                pod_change = trace[i+1] - trace[i]
-                vector_state[state_name] = pod_change
-            elif state_name == "pod_frequency":
-                pod_frequency = self.discrete_frequency(trace, i)
-                vector_state[state_name] = pod_frequency
-            elif state_name == "pod_count":
-                pod_count = trace[i+1]
-                vector_state[state_name] = pod_count
-            elif state_name == "scale_sign":
-                sign_change = self.discrete_scale_sign(trace, i)
-                vector_state[state_name] = sign_change
-            else:
-                raise ValueError("Invalid state name")
-        return vector_state
 
 
     def discrete_frequency(self, trace, i):
@@ -233,6 +215,12 @@ class MarkovChainRadical:
         if self.local_freq not in self.frequencies:
             self.frequencies.append(self.local_freq)
         return self.local_freq
+
+    # def discrete_pod_change(self, trace, i):
+    #     return trace[i+1] - trace[i] 
+    
+    # def discrete_pod_count(self, trace, i):
+    #     return trace[i+1]
     
     def discrete_scale_sign(self, trace, i):
         if trace[i+1] > trace[i]:
@@ -240,6 +228,35 @@ class MarkovChainRadical:
         elif trace[i+1] < trace[i]:
             self.curr_sign = -1
         return self.curr_sign
+
+    def check_max_frequency(self, trace):
+        local_freq = 1
+        for i in range(len(trace) - 1):
+            if trace[i] == trace[i + 1]:
+                local_freq += 1
+            else:
+                local_freq = 1
+            self.max_frequency = max(self.max_frequency, local_freq)
+        return self.max_frequency
+
+    def check_max_pod_change(self, trace):
+        local_pod_change_pos = 0
+        local_pod_change_neg = 0
+        for i in range(len(trace) - 1):
+            if trace[i + 1] - trace[i] > 0:
+                local_pod_change_pos = trace[i + 1] - trace[i]
+            elif trace[i + 1] - trace[i] < 0:
+                local_pod_change_neg = trace[i] - trace[i + 1]
+            self.max_pod_change_pos = max(
+                self.max_pod_change_pos, max(1, local_pod_change_pos)
+            )
+            self.max_pod_change_neg = max(
+                self.max_pod_change_neg, max(1, local_pod_change_neg)
+            )
+
+    def check_max_pod_count(self, trace):
+        for i in range(len(trace)):
+            self.max_pod_count = max(self.max_pod_count, trace[i])
 
     def add_row_and_sum_to_stal_stsl(self):
         self.state_transition_adjacency_list.append({})
@@ -253,8 +270,8 @@ class MarkovChainRadical:
             # distance = distance_calculator_rmse(each_vector_state, new_vector_state)
             rmse = 0
             rmse_calc_halted = False
-            for state_name in self.state_combinations:
-                rmse += (each_vector_state[state_name] - new_vector_state[state_name])**2
+            for i in range(len(each_vector_state)):
+                rmse += (each_vector_state[i] - new_vector_state[i])**2
                 if rmse > com_thresh_rmse:
                     rmse_calc_halted = True
                     break
@@ -274,7 +291,16 @@ class MarkovChainRadical:
             mae += abs(state_a[i] - state_b[i])
         return mae / len(state_a)
 
+    # def trace_scaling(self, elem):
+    #     if np.isclose(elem, 0):
+    #         return 0
+    #     elif elem < 1:
+    #         return round(elem, 7)
+    #     else:
+    #         return round(elem, 2)
+
     def Forecast(self, trace, forecast_window): # the trace should have at least 3 elements
+        # trace = [self.trace_scaling(elem) for elem in trace]
         scaled_trace = trace_scaling(trace)
         scaled_trace = scaled_trace[-3:]
         prev_vector_state = self.pvs
@@ -293,7 +319,6 @@ class MarkovChainRadical:
         ftrace = self.forecast(forecast_window, new_vector_state)
         if self.isDirty:
             self.all_vector_states.append(unknown_vector_state)
-            self.discovered_states += 1
             self.add_row_and_sum_to_stal_stsl()
             self.update_state_transition_adjacency_list(
                 self.all_vector_states.index(prev_vector_state),

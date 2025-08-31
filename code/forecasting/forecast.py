@@ -16,21 +16,13 @@ TRAIN_SPLIT = 0.7
 warnings.filterwarnings("ignore")
 
 conc_forecast_path = "../../data/azure/forecaster_data/concurrency/conc_forecast_00.pickle"
-idletime_forecast_path = "../../data/azure/forecaster_data/idletime/idletime_forecast_00.pickle"
 conc_path = "../../data/azure/transformed_data/concurrency/app_conc_00.pickle"
-idletime_path = "../../data/azure/transformed_data/container_idletime/app_idle_00.pickle"
 
-def forecast(forecaster, forecast_len, forecast_param, data, num_workers, mode, app_size, data_split, proportion, timestep=1, timestep_mode="avg",
-            weight_mode="default"):
+def forecast(forecaster, forecast_len, forecast_param, data, num_workers, app_size, data_split, 
+            proportion, weight_mode="default"):
     """Combines all invocations counts and execution durations into their respective lists.
     num_workers: int
     number of cores to use
-
-    mode: str
-    which transformed data to use
-        "idletime": to forecast idletime series. We only forecast for traces that have at least one idletime
-                    that is longer than half the forecasting window
-        "concurrency": to forecast concurrency series
 
     app_size: str
     which size of applications to forecast
@@ -38,16 +30,13 @@ def forecast(forecaster, forecast_len, forecast_param, data, num_workers, mode, 
         "medium" for <100M invocations
         "large" for >100M invocations
     
-    timestep: int
-    the number of minutes that is set as the minimum granularity
-
     weight_mode: str
         "4_cs": 4 times cold start weight
         "4_wm": 4 times wasted memory weight
         "exec": include execution durations in RUM
     """
     
-    data_path, save_path, num_files, sim = set_paths(mode, data, app_size, timestep, timestep_mode, 
+    data_path, save_path, num_files, sim = set_paths(data, app_size,
                                                     forecast_len, forecaster, forecast_param, weight_mode)
 
     print("{} start time: ".format(forecaster), strftime("%H:%M:%S"))
@@ -58,10 +47,6 @@ def forecast(forecaster, forecast_len, forecast_param, data, num_workers, mode, 
 
     for filenum in filenums:
         transformed_df = pd.read_pickle(data_path.replace("_00", "_{:02d}".format(filenum)))
-
-        if mode == "idletime":
-            transformed_df["TransformedValues"] = transformed_df.TransformedValues.apply(lambda x: x if len(x) > 1 else np.NaN)
-            transformed_df.dropna(inplace=True)
 
         result = sim.run_sim(transformed_df, num_workers)
 
@@ -76,22 +61,13 @@ def forecast(forecaster, forecast_len, forecast_param, data, num_workers, mode, 
         print(strftime("%H:%M:%S"))
 
 
-def set_paths(mode, data, app_size, timestep, timestep_mode, forecast_len, 
+def set_paths(data, app_size, forecast_len, 
               forecaster, forecast_param, weight_mode):
     print("Forecasting {} data".format(data))
 
-    if mode == "concurrency":
-        data_path = conc_path
-        save_path = conc_forecast_path
-        forecast_window = CONC_FORECAST_WINDOW
-    elif mode == "idletime":
-        data_path = idletime_path 
-        save_path = idletime_forecast_path
-        forecast_window = IDLETIME_FORECAST_WINDOW
-    elif mode == "timestep":
-        data_path = conc_path.replace("concurrency/", "concurrency/{}_minute/{}/".format(timestep, timestep_mode))
-        save_path = conc_forecast_path.replace("concurrency/", "concurrency/{}_minute/{}/".format(timestep, timestep_mode))
-        forecast_window = CONC_FORECAST_WINDOW
+    data_path = conc_path
+    save_path = conc_forecast_path
+    forecast_window = CONC_FORECAST_WINDOW
 
     data_path = data_path.replace("app_", "{}_app_".format(app_size))
     
@@ -113,7 +89,7 @@ def set_paths(mode, data, app_size, timestep, timestep_mode, forecast_len,
     forecast_window = FFT_WINDOW if forecaster == "IceBreaker" else forecast_window
 
     sim = ForecastSimulation(forecaster, weight_mode, forecast_param, forecast_len=forecast_len, num_past_elements=forecast_window, 
-                                data_mode=mode)
+                                data_mode="concurrency")
 
     return data_path, save_path, num_files, sim
 
@@ -145,7 +121,8 @@ def get_num_files(data_split, proportion, num_files):
 if __name__ == '__main__':
     forecast_len = 1
     data_mode = "azure"
-    forecasters = [("MarkovChain", None), ("IceBreaker", None), ("AR", 10), ("SETAR", 10), ("FFT_10", 10), ("Holt", None), ("ExpSmoothing", None), ("10_min_keepalive", None), ("5_min_keepalive", None)]
+    forecasters = [("MarkovChain", None), ("IceBreaker", None), ("AR", 10), ("FFT_10", 10), 
+                    ("10_min_keepalive", None), ("5_min_keepalive", None)] #("Holt", None), ("ExpSmoothing", None), ("SETAR", 10)]
     num_workers = 48
     data_split = "train"
     proportion = 1
@@ -156,4 +133,4 @@ if __name__ == '__main__':
         for data_split in ["train", "test"]:
             for size in ["small", "medium", "large"]:
                 forecast(forecaster[0], forecast_len, forecaster[1], data_mode, 
-                num_workers, "concurrency", size, data_split, proportion, 1, "max", weight_mode)
+                num_workers, size, data_split, proportion, weight_mode)

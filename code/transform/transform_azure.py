@@ -11,7 +11,6 @@ from utils import load_balance
 preproc_data_path = "../../data/azure/preproc_data/invocation_data/preprocessed_data_00.pickle"
 conc_event_path = "../../data/azure/transformed_data/conc_events/_app_conc_events_00.pickle"
 conc_save_path = "../../data/azure/transformed_data/concurrency/_app_conc_00.pickle"
-idletime_save_path = "../../data/azure/transformed_data/container_idletime/_app_idle_00.pickle"
 
 invocation_path = "../../data/azure/forecaster_data/invocations/{}_forecasts_00.pickle"
 invocation_event_path = "../../data/azure/transformed_data/conc_events/{}_{}_conc_events_00.pickle"
@@ -266,11 +265,6 @@ def set_mode(mode, size_filter, invocation_mode, func_mode, forecaster):
         data_path = event_path
         transformer = ConcurrencyTransformer()
 
-    elif mode == "idletime":
-        data_path = conc_save_path.replace("_app", size_filter + "_app")
-        save_path = idletime_save_path.replace("_app", size_filter + "_app")
-        transformer = ContainerIdleTimeTransformer()
-    
     elif mode == "event":
         data_path = invocation_path.format(forecaster) if invocation_mode else preproc_data_path
         save_path = event_path

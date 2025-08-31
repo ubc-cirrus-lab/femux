@@ -1,6 +1,11 @@
 # Instructions on Generating Simulation-based Results
+## Setup Notes
+- We configure our scripts to run on 48 cores and 140GB of Memory (on Ubuntu) to minimize runtime, but are parameterizable to any number of cores--16 core and 80GB works as well.
+- We comment out Holt, Exponential Smoothing, and SETAR to significantly cut down forecasting simulation runtime which is the bottleneck for reproduction. Results do not change significantly as these forecasters are selected for under 5 percent of blocks.
+
+
 ## Preprocessing
-We start with the azure 2019 dataset and consequently clean, format, and partition the data for our simulations. We configure our scripts to run on 48 cores and 140GB of Memory.
+We start with the azure 2019 dataset and clean, format, and partition the data for our simulations. 
 
 1. Make some of the basic directories and download the azure 2019 dataset: `cd code & ./setup.sh` 
 2. Preprocess the data and generate separate dataframes for

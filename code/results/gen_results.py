@@ -267,7 +267,7 @@ def calc_mem_alloc(num_actual_containers, num_predicted_containers, mem_usage, n
 if __name__ == '__main__':
     forecast_len = 1
     
-    forecasters = ["AR", "FFT_10", "MarkovChain", "ExpSmoothing", "Holt", "SETAR", "10_min_keepalive", "IceBreaker"]
+    forecasters = ["AR", "FFT_10", "MarkovChain", "10_min_keepalive", "5_min_keepalive", "IceBreaker"] #("ExpSmoothing", "Holt", "SETAR")
     
     data_mode = "test"
     data_percentage = 100
@@ -283,7 +283,7 @@ if __name__ == '__main__':
         
     for forecaster in forecasters:
         for block_size in [504]:
-            for data_mode in ["test"]:
+            for data_mode in ["train", "test"]:
                 file_subscript = "{}_{}_percent_{}".format(block_size, data_percentage, data_mode)
                 forecast_window = 120
 
