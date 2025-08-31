@@ -16,7 +16,7 @@ execution times, invocation counts, and application memory: each of the files in
 4. Generate training and testing split for applications: `/code/gen_train_test_split.py`
 
 ## Simulation: Offline Forecasting and Features Used Later
-1. Forecasting Simulations (~96h): `/code/forecasting/forecast.py`
+1. Forecasting Simulations (~120h): `/code/forecasting/forecast.py`
 2. Extracting Features (~8h): `/code/extract/feature_extraction.py`
 3. Simulate the cold start and memory usage/allocation based on the simulated forecasts (<8h): `/code/results/gen_results.py`
 4. Generate MAE values based on simualted forecasts (for comparing RUM and MAE): `/code/results/maes.py`
