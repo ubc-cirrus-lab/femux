@@ -20,10 +20,10 @@ def cluster_pipeline():
     num_workers = 48
     block_size = 504
     transformer = "StandardScaler"
-    weight_mode = "default_exec"
+    weight_mode = "default"
     classifier = "kmeans"
 
-    for weight_mode in ["default_exec"]:
+    for weight_mode in ["default_exec", "4_cs", "4_wm"]:
         print("Using forecasters: {}".format(forecasters))
 
         start_time = time()

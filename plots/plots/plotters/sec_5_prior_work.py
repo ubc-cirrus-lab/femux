@@ -76,9 +76,9 @@ markers = [
 
 
 def plot_final(forecasters, data_desc):
-    plot_faascache(axs[0])
+    #plot_faascache(axs[0])
     plot_icebreaker(forecasters + ["10_min_keepalive", "IceBreaker"], data_desc, axs[1])
-    plot_aquatope(forecasters + ["10_min_keepalive", "Aquatope"], data_desc, axs[2])
+    #plot_aquatope(forecasters + ["10_min_keepalive", "Aquatope"], data_desc, axs[2])
 
 
 def plot_aquatope(forecasters, data_desc, ax):
@@ -480,35 +480,35 @@ if __name__ == "__main__":
 
     plot_final(forecasters, data_desc)
 
-    # Faascache
-    axs[0].ticklabel_format(style="sci", axis="x", scilimits=(0, 0))
-    axs[0].set_xlim(0, 3.05e5)
-    axs[0].set_ylim(0, 2.2e7)
-    axs[0].yaxis.labelpad = 0
-    axs[0].legend(
-        ncol=2,
-        columnspacing=0.2,
-        borderpad=0.2,
-        borderaxespad=0,
-        handletextpad=0.2,
-        loc="lower center",
-        fontsize=9,
-    )
-    axs[0].grid(True, which="both", axis="both", alpha=0.25)
+    ## Faascache
+    #axs[0].ticklabel_format(style="sci", axis="x", scilimits=(0, 0))
+    #axs[0].set_xlim(0, 3.05e5)
+    #axs[0].set_ylim(0, 2.2e7)
+    #axs[0].yaxis.labelpad = 0
+    #axs[0].legend(
+        #ncol=2,
+        #columnspacing=0.2,
+        #borderpad=0.2,
+        #borderaxespad=0,
+        #handletextpad=0.2,
+        #loc="lower center",
+        #fontsize=9,
+    #)
+    #axs[0].grid(True, which="both", axis="both", alpha=0.25)
 
-    x_values = []
-    y_values = []
-    for key in sorted(Faascache_points.keys()):
-        x_values.append(key)
-        y_values.append(Faascache_points[key])
-    axs[0].plot(
-        x_values,
-        y_values,
-        color="black",
-        linestyle="--",
-        zorder=0,
-        alpha=0.25,
-    )
+    #x_values = []
+    #y_values = []
+    #for key in sorted(Faascache_points.keys()):
+        #x_values.append(key)
+        #y_values.append(Faascache_points[key])
+    #axs[0].plot(
+        #x_values,
+        #y_values,
+        #color="black",
+        #linestyle="--",
+        #zorder=0,
+        #alpha=0.25,
+    #)
 
     # IceBreaker
     axs[1].set_xlim(0, 300)
@@ -517,12 +517,12 @@ if __name__ == "__main__":
     axs[1].yaxis.labelpad = 0
     axs[1].legend()
 
-    # Aquatope
-    axs[2].set_xlim(0, 0.6)
-    axs[2].set_ylim(0, 250)
-    axs[2].grid(True, which="both", axis="both", alpha=0.25)
-    axs[2].yaxis.labelpad = 0
-    axs[2].legend()
+    ## Aquatope
+    #axs[2].set_xlim(0, 0.6)
+    #axs[2].set_ylim(0, 250)
+    #axs[2].grid(True, which="both", axis="both", alpha=0.25)
+    #axs[2].yaxis.labelpad = 0
+    #axs[2].legend()
 
     plt.tight_layout()
     plt.savefig(file_name.format("all"), bbox_inches="tight")
