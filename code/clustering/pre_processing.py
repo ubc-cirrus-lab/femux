@@ -7,7 +7,7 @@ sys.path.append("..")
 from clustering.utils import set_metric, set_75p_metric, gen_wasted_mem_baseline
 
 data_dir = str(Path(__file__).resolve().parents[2] / "data" / "azure") + "/"
-hypothesis_test_file = data_dir + "hypothesis_tests/hypothesis_tests_{}/hypothesis_tests_{}_{}_{}.pickle"
+hypothesis_test_file = data_dir + "features/features_{}/features_{}_{}_{}.pickle"
 result_file = data_dir + "results/{}_{}_percent_{}/{}_cold_starts_wasted_mem.pickle"
 exec_path = data_dir + "preproc_data/app_exec_time_data.pickle"
 

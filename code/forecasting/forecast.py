@@ -46,6 +46,7 @@ def forecast(forecaster, forecast_len, forecast_param, data, num_workers, app_si
     filenums = get_num_files(data_split, proportion, num_files)
 
     for filenum in filenums:
+        print("on chunk {}".format(filenum))
         transformed_df = pd.read_pickle(data_path.replace("_00", "_{:02d}".format(filenum)))
 
         result = sim.run_sim(transformed_df, num_workers)
@@ -121,8 +122,7 @@ def get_num_files(data_split, proportion, num_files):
 if __name__ == '__main__':
     forecast_len = 1
     data_mode = "azure"
-    forecasters = [("MarkovChain", None), ("IceBreaker", None), ("AR", 10), ("FFT_10", 10), 
-                    ("10_min_keepalive", None), ("5_min_keepalive", None)] #("Holt", None), ("ExpSmoothing", None), ("SETAR", 10)]
+    forecasters = [("FFT", 10), ("AR", 10), ("MarkovChain", None), ("10_min_keepalive", None), ("5_min_keepalive", None), ("IceBreaker", None)] #("Holt", None), ("ExpSmoothing", None), ("SETAR", 10)]
     num_workers = 48
     data_split = "train"
     proportion = 1

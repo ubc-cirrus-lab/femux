@@ -4,12 +4,13 @@ mkdir data
 cd data
 mkdir azure
 cd azure
-mkdir preproc_data azure_data forecaster_data transformed_data hypothesis_tests clustering
+mkdir train_test_split
+mkdir preproc_data azure_data forecaster_data transformed_data features clustering
 cd transformed_data 
 mkdir concurrency app_conc_events && cd ..
 cd forecaster_data
 mkdir concurrency && cd ..
-cd hypothesis_tests
+cd features
 mkdir concurrency && cd ..
 cd clustering
 mkdir concurrency && cd ..
