@@ -1,0 +1,2 @@
+We use the Aquatope (ASPLOS '23) artifact's [source code](https://github.com/zzhou612/aquatope) for our comparisons with their predictive model.
+Only the data inputs and outputs are adjusted to fit our data pipeline, but all model/transformer logic and parameters are kept to defaults.

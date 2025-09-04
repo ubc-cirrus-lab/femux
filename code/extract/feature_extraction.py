@@ -32,24 +32,7 @@ class HypothesisTesting:
 
     def process_transformed_traces(self, transformed_path, transformed_func_path, feature_types):
         for feature_type in feature_types:
-            if feature_type == 'Harmonics':
-                transformed_func_file_names = [
-                    f for f in listdir(transformed_func_path) if isfile(join(transformed_func_path, f))
-                ]
-                
-                transformed_func_file_names.sort()
-                print("files under consideration per func: ", transformed_func_file_names)
-                
-                for index, file_name_per_func in enumerate(transformed_func_file_names):
-                    print("starting with file: {}".format(file_name_per_func))
-                    transformed_df = pd.read_pickle(transformed_func_path + file_name_per_func)
-               
-                    feature_df = self.multiprocessor_apply_tests(transformed_df, feature_type) 
-                    result = self.transform_func_to_app_level_ht(feature_df)
-                    
-                    result.to_pickle(self.OUTPUT+"hypothesis_tests_{}_{}_{}.pickle".format(feature_type, self.block_size, index))
-                    print("completed file: {}".format(file_name_per_func))
-            elif feature_type == "ExecutionTimes":
+            if feature_type == "ExecutionTimes":
                 exec_time_df = pd.read_pickle(exec_path)
                 print(exec_time_df)
             else:   
