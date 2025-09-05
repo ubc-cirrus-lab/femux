@@ -1,3 +1,5 @@
+Nima Nasiri, Nalin Munshi, Simon D Moser, Marius Pirvu, Vijay Sundaresan, Daryl Maier, Thatta Premnath, Norman Böwing, Sathish Gopalakrishnan, and Mohammad Shahrad, "In-Production Characterization of an Open Source Serverless Platform and New Scaling Strategies", 2026 ACM European Conference on Computer Systems (EuroSys '26).
+
 # Instructions on Generating Simulation-based Results
 Our artifact includes the code necessary to reproduce all simulated results for FeMux--eventually producing FeMux's results for Figures 7, 8, 10, and 11. 
 
