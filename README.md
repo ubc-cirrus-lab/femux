@@ -4,7 +4,7 @@ Nima Nasiri, Nalin Munshi, Simon D Moser, Marius Pirvu, Vijay Sundaresan, Daryl 
 Our artifact includes the code necessary to reproduce all simulated results for FeMux--eventually producing FeMux's results for Figures 7, 8, 10, and 11. 
 
 ## Setup Notes
-- We configure our scripts to run on 48 cores and 140GB of Memory (on Ubuntu) to minimize runtime, but are parameterizable to any number of cores--16 core and 80GB works as well. Time estimates below are given on 16 core machines.
+- We recommend configuring our scripts to run on 48 cores and 140GB of Memory (on Ubuntu) to minimize runtime, but they are parameterizable to any number of cores--we set them to 16 core and 80GB by default. Time estimates below are given on 16 core machines.
 - We comment out Holt, Exponential Smoothing, and SETAR to significantly cut down forecasting simulation runtime which is the bottleneck for reproduction. Results do not change significantly as these forecasters are selected for under 5 percent of blocks.
 
 

@@ -123,7 +123,7 @@ if __name__ == '__main__':
     forecast_len = 1
     data_mode = "azure"
     forecasters = [("FFT", 10), ("AR", 10), ("MarkovChain", None), ("10_min_keepalive", None), ("5_min_keepalive", None), ("IceBreaker", None)] #("Holt", None), ("ExpSmoothing", None), ("SETAR", 10)]
-    num_workers = 48
+    num_workers = 16
     data_split = "train"
     proportion = 1
 

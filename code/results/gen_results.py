@@ -272,7 +272,7 @@ if __name__ == '__main__':
     data_mode = "test"
     data_percentage = 100
     block_size = 504
-    num_workers = 48
+    num_workers = 16
     classification_model = "kmeans"
     femux_features = "Density_Linearity_Stationarity_Harmonics"
     femux_transformer = "None"
