@@ -10,8 +10,6 @@ cd transformed_data
 mkdir concurrency app_conc_events && cd ..
 cd forecaster_data
 mkdir concurrency && cd ..
-cd features
-mkdir concurrency && cd ..
 cd clustering
 mkdir concurrency && cd ..
 cd azure_data

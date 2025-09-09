@@ -7,13 +7,13 @@ sys.path.append("..")
 from clustering.utils import set_metric, set_75p_metric, gen_wasted_mem_baseline
 
 data_dir = str(Path(__file__).resolve().parents[2] / "data" / "azure") + "/"
-hypothesis_test_file = data_dir + "features/features_{}/features_{}_{}_{}.pickle"
+feature_file = data_dir + "features/features_{}/features_{}_{}_{}.pickle"
 result_file = data_dir + "results/{}_{}_percent_{}/{}_cold_starts_wasted_mem.pickle"
 exec_path = data_dir + "preproc_data/app_exec_time_data.pickle"
 
 NUM_DAYS = 12
 MINUTES_PER_DAY = 1440
-NUM_HYPOTHESIS_TEST_FILES = 45
+NUM_FEATURE_FILES = 45
 MS_PER_SEC = 1000
 
 def get_train_test_data(forecasters, percentage, block_size, weight_mode, features):
@@ -54,8 +54,8 @@ def combine_features(block_size, num_blocks, features):
 
         feature_dfs = []
 
-        for filenum in range(NUM_HYPOTHESIS_TEST_FILES):
-            df = pd.read_pickle(hypothesis_test_file.format(block_size, feature, block_size, filenum))
+        for filenum in range(NUM_FEATURE_FILES):
+            df = pd.read_pickle(feature_file.format(block_size, feature, block_size, filenum))
             feature_dfs.append(df)
 
         feature_df = pd.concat(feature_dfs, ignore_index=True)

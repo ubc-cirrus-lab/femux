@@ -24,7 +24,7 @@ class HypothesisTesting:
         # this flag is set internally do not touch
         self.func_flag = False
         
-        self.OUTPUT = "../../data/azure/hypothesis_tests/hypothesis_tests_{}/".format(self.block_size)
+        self.OUTPUT = "../../data/azure/features/features_{}/".format(self.block_size)
 
         if not os.path.exists(self.OUTPUT):
             print("creating directory structure...")
@@ -46,7 +46,7 @@ class HypothesisTesting:
                     print("starting with file: {}".format(file_name))
                     transformed_df = pd.read_pickle(transformed_path + file_name)
                     result = self.multiprocessor_apply_tests(transformed_df, feature_type)
-                    result.to_pickle(self.OUTPUT+"hypothesis_tests_{}_{}_{}.pickle".format(feature_type, self.block_size, index))
+                    result.to_pickle(self.OUTPUT+"features_{}_{}_{}.pickle".format(feature_type, self.block_size, index))
                     print("completed file: {}".format(file_name))
                 
 
@@ -161,7 +161,7 @@ def combine_harmonics(harmonics_per_func):
 
 if __name__ == "__main__":
     dppd = HypothesisTesting(max_workers=48, block_size=504) 
-    feature_types = ["Density", "Linearity", "Stationarity", "Harmonics"]
+    feature_types = ["Harmonics"]
 
     FUNC_PATH = "../../data/azure/transformed_data/concurrency/func/"
     PATH = "../../data/azure/transformed_data/concurrency/" 
