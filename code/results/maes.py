@@ -95,6 +95,23 @@ def gen_maes(transformed_vals, forecasted_vals, forecast_len, num_past_elements)
             
     return mae_list
 
+def get_mae(forecasted_vals, real_vals, forecast_len):
+    """Calculate mean absolute error between forecasted and future values
+    forecasted_vals: list[float]
+
+    real_vals: list[float]
+
+    returns: list[float]
+    Mean Absolute Difference between each forecasted value and real value at a give timestep
+    (e.g., a 5-step forecast will have one MAE value for each of the 5 steps in the future)
+    """
+    error_list = np.empty(forecast_len)
+    
+    for t in range(forecast_len):
+        error_list[t] = abs(forecasted_vals[t] - real_vals[t])
+
+    return error_list
+
 
 if __name__ == '__main__':
     forecast_len = 1
