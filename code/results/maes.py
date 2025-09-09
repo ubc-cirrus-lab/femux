@@ -10,7 +10,6 @@ from math import ceil
 
 sys.path.append("../")
 
-from forecasting.forecaster_perf import gen_maes
 from pathlib import Path
 
 data_dir = str(Path(__file__).parents[2] / "data" / "azure") + "/"
@@ -75,10 +74,38 @@ def gen_maes_multiproc(df, forecast_len, forecast_window):
     return df[["HashApp", "MAE"]]
 
 
+def gen_maes(transformed_vals, forecasted_vals, forecast_len, num_past_elements):
+    """Generate mean absolue error values for the forecasted value(s) at each timestep.
+    transformed_vals: np.array(float)
+        original trace (e.g., per-minute concurrency)
+    
+    forecasted_vals: np.array(np.array(float))
+        each element is the forecasted value(s) at that given timestep
+
+    forecast_len: int
+        how many future elements to forecast
+
+    num_past_elements:int
+        number of past elements used for forecasting
+
+    """
+    trace_len = len(transformed_vals)
+    num_forecasts = trace_len - forecast_len - num_past_elements
+    mae_list = np.empty(shape=(num_forecasts, forecast_len))
+    
+    for trace_index in range(num_past_elements, trace_len - forecast_len):
+        forecast_index = trace_index - num_past_elements
+        mae_list[forecast_index] = get_mae(forecasted_vals[forecast_index], 
+                                transformed_vals[trace_index: trace_index + forecast_len], 
+                                forecast_len)
+            
+    return mae_list
+
+
 if __name__ == '__main__':
     forecast_len = 1
     
-    forecasters = ["AR_10", "MarkovChain", "ExpSmoothing", "FFT_10"]
+    forecasters = ["AR_10", "FFT_10"]
     
     data_percentage = 100
     block_size = 504

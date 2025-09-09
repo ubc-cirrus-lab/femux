@@ -22,7 +22,7 @@ execution times, invocation counts, and application memory: each of the files in
 1. Forecasting Simulations (~120h): `/code/forecasting/forecast.py`
 2. Extracting Features (~4h): `/code/extract/feature_extraction.py`
 3. Simulate the cold start and memory usage/allocation based on the simulated forecasts (<8h): `/code/results/gen_results.py`
-4. Generate MAE values based on simualted forecasts (for comparing RUM and MAE): `/code/results/maes.py`
+4. Generate MAE values based on simulated forecasts (for comparing RUM and MAE): `/code/results/maes.py`
 
 ## Clustering Forecasters and Simulating Switching Performance
 `clustering_pipeline.py` combines the clustering, and simulated performance of the FeMux prototype 
