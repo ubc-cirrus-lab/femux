@@ -323,7 +323,7 @@ def fix_gaps(dfs, num_workers):
 
 if __name__ == '__main__':   
     for size in ["small","medium", "large"]:
-        transform(16, 14, "event", size)
+        transform(num_workers = 16, 14, "event", size)
     
     for size in ["small","medium", "large"]:
-        transform(16, 14, "concurrency", size)
+        transform(num_workers = 16, 14, "concurrency", size)
