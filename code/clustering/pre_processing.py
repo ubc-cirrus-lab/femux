@@ -56,9 +56,14 @@ def combine_features(block_size, num_blocks, features):
 
         for filenum in range(NUM_FEATURE_FILES):
             df = pd.read_pickle(feature_file.format(block_size, feature, block_size, filenum))
+
+            # We want the number of harmonics in each block for each application
+            if feature == "Harmonics":        
+                df[feature] = df[feature].apply(lambda harmonics_per_block : [len(harmonics) for harmonics in harmonics_per_block])
+            
             feature_dfs.append(df)
 
-        feature_df = pd.concat(feature_dfs, ignore_index=True)
+        feature_df = pd.concat(feature_dfs, ignore_index=True)        
 
         feature_df[feature] = feature_df[feature].apply(lambda x : x[:num_blocks])
 

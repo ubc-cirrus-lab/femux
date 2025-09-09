@@ -40,14 +40,8 @@ def mae_calc(file_subscript, forecaster, forecast_window, forecast_len, num_work
     df = utils.clean_data(df, block_size)
     
     print("adding forecaster values for {}".format(forecaster), strftime("%H:%M:%S"))
-    df = utils.set_forecaster(df, forecaster, femux_path)
-    
-    if df.isnull().values.any():
-        prev_len = len(df)
-        df = df.dropna()
-        num_missing = prev_len - len(df)
-
-        raise Exception("Missing {} results for selected dataset".format(num_missing))
+    df = utils.set_forecaster(df, forecaster, femux_path) 
+    df = df.dropna()
 
     print("generating results".format(forecaster), strftime("%H:%M:%S"))
     dfs = np.array_split(df, num_workers)
