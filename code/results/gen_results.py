@@ -56,13 +56,8 @@ def gen_results(file_subscript, forecaster, forecast_window, forecast_len, num_w
     
     print("adding forecaster values for {}".format(forecaster), strftime("%H:%M:%S"))
     df = utils.set_forecaster(df, forecaster, femux_path)
-    
-    if df.isnull().values.any():
-        prev_len = len(df)
-        df = df.dropna()
-        num_missing = prev_len - len(df)
-
-        raise Exception("Missing {} results for selected dataset".format(num_missing))
+    # some apps don't have forecasted values
+    df = df.dropna()
 
     print("generating results".format(forecaster), strftime("%H:%M:%S"))
     dfs = np.array_split(df, num_workers)
@@ -267,7 +262,7 @@ def calc_mem_alloc(num_actual_containers, num_predicted_containers, mem_usage, n
 if __name__ == '__main__':
     forecast_len = 1
     
-    forecasters = ["AR", "FFT_10", "MarkovChain", "10_min_keepalive", "5_min_keepalive", "IceBreaker"] #("ExpSmoothing", "Holt", "SETAR")
+    forecasters = ["AR_10", "FFT_10", "MarkovChain", "10_min_keepalive", "5_min_keepalive", "IceBreaker"] #("ExpSmoothing", "Holt", "SETAR")
     
     data_mode = "test"
     data_percentage = 100

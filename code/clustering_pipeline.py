@@ -15,7 +15,7 @@ def cluster_pipeline():
     forecast_len = 1
     forecast_window = 120
     data_percentage = 100
-    forecasters = ["AR", "FFT_10", "MarkovChain", "10_min_keepalive", "5_min_keepalive"] #("Holt", "ExpSmoothing", "SETAR")
+    forecasters = ["AR_10", "FFT_10", "MarkovChain", "10_min_keepalive", "5_min_keepalive"] #("Holt", "ExpSmoothing", "SETAR")
     features = ["Density", "Linearity", "Stationarity", "Harmonics"]
     num_workers = 16
     block_size = 504

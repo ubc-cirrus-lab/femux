@@ -95,6 +95,9 @@ def set_forecaster(df, forecaster, femux_path):
                 continue
 
             forecaster_df = forecaster_df[forecaster_df.HashApp.isin(target_hashapps)]
+            if len(forecaster_df) == 0:
+                continue
+            
             forecaster_df = forecaster_df[["HashApp", "ForecastedValues"]]
             forecaster_dfs.append(forecaster_df)
 

@@ -63,7 +63,7 @@ def classification(classification_type, forecasters, features, percentage, trans
 
 if __name__ == '__main__':
     percentage = 20
-    forecasters = ["AR", "SETAR", "FFT_10", "Holt", "MarkovChain_v3", "ExpSmoothing", "10_min_keepalive", "5_min_keepalive"]
+    forecasters = ["AR_10", "SETAR", "FFT_10", "Holt", "MarkovChain_v3", "ExpSmoothing", "10_min_keepalive", "5_min_keepalive"]
     transformer = "DecisionTree"
     features = ["Density", "Linearity", "Stationarity", "Harmonics"]
     block_size = 504

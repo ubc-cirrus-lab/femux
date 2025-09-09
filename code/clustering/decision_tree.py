@@ -68,7 +68,7 @@ if __name__ == "__main__":
     #print(feature_set)
 
     percentage = 20
-    forecasters = ["AR", "SETAR", "FFT_10", "Holt", "MarkovChain_v3", "ExpSmoothing", "10_min_keepalive", "5_min_keepalive"]
+    forecasters = ["AR_10", "SETAR", "FFT_10", "Holt", "MarkovChain_v3", "ExpSmoothing", "10_min_keepalive", "5_min_keepalive"]
     transformer = None
     classification_type = "decision_tree"
     block_size = 504

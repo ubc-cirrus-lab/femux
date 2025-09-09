@@ -18,7 +18,7 @@ WASTED_MEMORY_WEIGHT = 1 / 99.69
 
 df_data = {"Forecaster": [], "Invocations": [], "RUM": []}
 
-name_map = {"Adaptive_FFT_10": "FFT", "AR": "AR"}
+name_map = {"Adaptive_FFT_10": "FFT", "AR_10": "AR"}
 
 
 def plot_metric(forecasters, result_df, size):
@@ -88,8 +88,8 @@ if __name__ == "__main__":
 
     winners = {
         "<1 Million": "Adaptive_FFT_10",
-        "1M-100M": "AR",
-        ">100 Million": "AR",
+        "1M-100M": "AR_10",
+        ">100 Million": "AR_10",
     }
 
     i = 0
@@ -121,10 +121,10 @@ if __name__ == "__main__":
     # ax.set_ylim(1e6, 1.7e7)
 
     comb_data = {
-        "Strategy": ["AR", name_map["Adaptive_FFT_10"], "App-aware"],
+        "Strategy": ["AR_10", name_map["Adaptive_FFT_10"], "App-aware"],
         "RUM": [],
     }
-    comb_data["RUM"].append(df[(df["Forecaster"] == "AR")]["RUM"].sum())
+    comb_data["RUM"].append(df[(df["Forecaster"] == "AR_10")]["RUM"].sum())
     comb_data["RUM"].append(
         df[(df["Forecaster"] == name_map["Adaptive_FFT_10"])]["RUM"].sum()
     )

@@ -164,7 +164,7 @@ if __name__ == "__main__":
     forecasters = [
         "5_min_keepalive",
         "10_min_keepalive",
-        "AR",
+        "AR_10",
         #"ExpSmoothing",
         "MarkovChain_v3",
         #"SETAR",

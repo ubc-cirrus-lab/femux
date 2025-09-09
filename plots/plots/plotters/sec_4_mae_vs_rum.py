@@ -75,7 +75,7 @@ def plot_metric(forecasters, result_df):
 
 
 if __name__ == "__main__":
-    forecasters = ["FFT_10", "AR"]
+    forecasters = ["FFT_10", "AR_10"]
 
     block_size = 504
     percentage = 100
@@ -90,17 +90,17 @@ if __name__ == "__main__":
     fft_mae_gain = [
         "FFT"
         for i in range(len(MAE_results["FFT_10"]))
-        if MAE_results["AR"][i] > MAE_results["FFT_10"][i]
+        if MAE_results["AR_10"][i] > MAE_results["FFT_10"][i]
     ]
     fft_rum_gain = [
         "FFT"
         for i in range(len(RUM_results["FFT_10"]))
-        if RUM_results["AR"][i] > RUM_results["FFT_10"][i]
+        if RUM_results["AR_10"][i] > RUM_results["FFT_10"][i]
     ]
 
     axs[0].pie(
         [len(fft_mae_gain), len(MAE_results["FFT_10"]) - len(fft_mae_gain)],
-        labels=["FFT", "AR"],
+        labels=["FFT", "AR_10"],
         autopct="%1.1f%%",
         colors=["#1bcf1b", "#ff7f0e"],
         textprops={"fontsize": 15},
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     )
     axs[1].pie(
         [len(fft_rum_gain), len(RUM_results["FFT_10"]) - len(fft_rum_gain)],
-        labels=["FFT", "AR"],
+        labels=["FFT", "AR_10"],
         autopct="%1.1f%%",
         colors=["#1bcf1b", "#ff7f0e"],
         textprops={"fontsize": 15},

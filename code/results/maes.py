@@ -78,7 +78,7 @@ def gen_maes_multiproc(df, forecast_len, forecast_window):
 if __name__ == '__main__':
     forecast_len = 1
     
-    forecasters = ["AR", "MarkovChain", "ExpSmoothing", "FFT_10"]
+    forecasters = ["AR_10", "MarkovChain", "ExpSmoothing", "FFT_10"]
     
     data_percentage = 100
     block_size = 504
