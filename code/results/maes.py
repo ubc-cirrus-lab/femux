@@ -87,13 +87,14 @@ def gen_maes(transformed_vals, forecasted_vals, forecast_len, num_past_elements)
     num_forecasts = trace_len - forecast_len - num_past_elements
     mae_list = np.empty(shape=(num_forecasts, forecast_len))
     
-    for trace_index in range(num_past_elements, trace_len - forecast_len):
+    for trace_index in range(num_past_elements, num_past_elements + len(forecasted_vals)):
         forecast_index = trace_index - num_past_elements
         mae_list[forecast_index] = get_mae(forecasted_vals[forecast_index], 
                                 transformed_vals[trace_index: trace_index + forecast_len], 
                                 forecast_len)
             
     return mae_list
+
 
 def get_mae(forecasted_vals, real_vals, forecast_len):
     """Calculate mean absolute error between forecasted and future values
@@ -116,7 +117,7 @@ def get_mae(forecasted_vals, real_vals, forecast_len):
 if __name__ == '__main__':
     forecast_len = 1
     
-    forecasters = ["AR_10", "FFT_10"]
+    forecasters = ["FFT_10", "AR_10"]
     
     data_percentage = 100
     block_size = 504
