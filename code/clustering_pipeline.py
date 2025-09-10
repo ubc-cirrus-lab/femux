@@ -23,7 +23,7 @@ def cluster_pipeline():
     weight_mode = "default"
     classifier = "kmeans"
 
-    for weight_mode in ["default_exec", "4_cs", "4_wm"]:
+    for weight_mode in ["default", "4_cs", "4_wm"]:
         print("Using forecasters: {}".format(forecasters))
 
         start_time = time()

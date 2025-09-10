@@ -222,5 +222,6 @@ def get_forecaster_names(df, default_forecaster, col_name):
 
 
 if __name__ == '__main__':
-    post_process(False, "decision_tree", "10_min_keepalive", block_size=504, forecast_window=120, forecast_len=1, 
-            num_workers=1, features=["Density", "Linearity", "Stationarity", "Harmonics"], percentage=20, transformer=None, weight_mode="default")
+    post_process(False, "kmeans", "10_min_keepalive", block_size=504, forecast_window=120, forecast_len=1, 
+            num_workers=1, features=["Density", "Linearity", "Stationarity", "Harmonics"], percentage=100, 
+            transformer="StandardScaler", weight_mode="default")
