@@ -66,6 +66,7 @@ class ForecastSimulation(SimulatorInterface):
         """
         traces_df.reset_index(inplace=True, drop=True)
 
+        traces_df = traces_df[["HashApp", "NumEvents", "TransformedValues", "ContainerInvocationsPerMin"]]
         traces_df = add_mem_values(traces_df)
         traces_df = add_exec_times(traces_df)
 
