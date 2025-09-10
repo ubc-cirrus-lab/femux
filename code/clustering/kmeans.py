@@ -4,6 +4,7 @@ import numpy as np
 from pathlib import Path
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
+import pickle
 
 data_dir = str(Path(__file__).parents[2] / "data" / "azure" / "clustering") + "/"
 
@@ -48,15 +49,17 @@ def train_kmeans(df, features):
     return best_kmeans, transformer, forecaster_map
 
 
-def test_kmeans(mod, transformer, df, forecaster_map, features):
+def test_kmeans(model, transformer, df, forecaster_map, features):
     df[features] = transformer.transform(df[features])
-    kmeans_labels = mod.predict(df[features])
+    kmeans_labels = model.predict(df[features])
     df["Cluster"] = kmeans_labels
 
     cluster_map = {}
     for i in range(max(kmeans_labels) + 1):
         cur_df = df[kmeans_labels == i]
-        cluster_forecaster = cur_df[forecaster_map.values()].sum().idxmin()
+        forecaster_sums = cur_df[forecaster_map.values()].sum()
+        min_index = np.argmin(forecaster_sums.values.tolist())
+        cluster_forecaster = forecaster_sums.index.tolist()[min_index]
         cluster_map[i] = cluster_forecaster
 
     df["Cluster_Forecaster"] = df["Cluster"].apply(lambda x: cluster_map[x])
@@ -80,8 +83,6 @@ def map_forecaster_to_int(df):
     
 
 if __name__ == "__main__":
-    train_df = pd.read_pickle("train.pickle")
-    test_df = pd.read_pickle("test.pickle")
     features = ["Density", "Linearity", "Stationarity", "Harmonics"]
 
     percentage = 20
@@ -91,7 +92,11 @@ if __name__ == "__main__":
     block_size = 504
     weight_mode = "default"
 
-    kmeans_model, transformer, forecaster_map = train_kmeans(train_df, features)
+    #kmeans_model, transformer, forecaster_map = train_kmeans(train_df, features)
+    kmeans_model = pickle.load(open("training_model_kmeans.pickle", "rb"))
+    transformer = pickle.load(open("training_transformer_kmeans.pickle", "rb"))
+    forecaster_map = pickle.load(open("forecaster_map.pickle", "rb"))
+    test_df = pickle.load(open("test_df.pickle", "rb"))
 
     test_df = test_kmeans(kmeans_model, transformer, test_df, forecaster_map, features)
 

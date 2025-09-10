@@ -1,3 +1,4 @@
 *data/azure*
 *.pyc
 *__pycache__*
+*.pickle
