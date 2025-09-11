@@ -161,7 +161,7 @@ def combine_harmonics(harmonics_per_func):
 
 if __name__ == "__main__":
     dppd = HypothesisTesting(max_workers=48, block_size=504) 
-    feature_types = ["Harmonics"]
+    feature_types = ["Harmonics", "Density", "Stationarity", "Linearity"]
 
     FUNC_PATH = "../../data/azure/transformed_data/concurrency/func/"
     PATH = "../../data/azure/transformed_data/concurrency/" 
