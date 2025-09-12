@@ -16,7 +16,7 @@ COLD_START_DURATION = 0.808
 COLD_START_TIME_WEIGHT = 1
 WASTED_MEMORY_WEIGHT = 1 / 99.69
 
-file_name = save_path + "sec_4_forecaster_comp.pdf"
+file_name = save_path + "sec_5_forecaster_comp.pdf"
 
 markers = [
     "$10$",
