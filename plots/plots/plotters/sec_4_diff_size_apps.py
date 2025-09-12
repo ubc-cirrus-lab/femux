@@ -18,7 +18,7 @@ WASTED_MEMORY_WEIGHT = 1 / 99.69
 
 df_data = {"Forecaster": [], "Invocations": [], "RUM": []}
 
-name_map = {"Adaptive_FFT_10": "FFT", "AR_10": "AR"}
+name_map = {"FFT_10": "FFT", "AR_10": "AR"}
 
 
 def plot_metric(forecasters, result_df, size):
@@ -57,7 +57,7 @@ def plot_metric(forecasters, result_df, size):
 
 
 if __name__ == "__main__":
-    forecasters = ["AR_10", "Adaptive_FFT_10"]
+    forecasters = ["AR_10", "FFT_10"]
 
     block_size = 504
     percentage = 100
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     )
 
     winners = {
-        "<1 Million": "Adaptive_FFT_10",
+        "<1 Million": "FFT_10",
         "1M-100M": "AR_10",
         ">100 Million": "AR_10",
     }
@@ -121,16 +121,19 @@ if __name__ == "__main__":
     # ax.set_ylim(1e6, 1.7e7)
 
     comb_data = {
-        "Strategy": ["AR_10", name_map["Adaptive_FFT_10"], "App-aware"],
+        "Strategy": ["AR_10", name_map["FFT_10"], "App-aware"],
         "RUM": [],
     }
-    comb_data["RUM"].append(df[(df["Forecaster"] == "AR_10")]["RUM"].sum())
+    comb_data["RUM"].append(df[(df["Forecaster"] == "AR")]["RUM"].sum())
     comb_data["RUM"].append(
-        df[(df["Forecaster"] == name_map["Adaptive_FFT_10"])]["RUM"].sum()
+        df[(df["Forecaster"] == "FFT")]["RUM"].sum()
     )
     comb_data["RUM"].append(1.203671e07 + 5.355242e06 + 1.195713e06)
 
+    print(comb_data)
+
     comb_data_df = pd.DataFrame(comb_data)
+    print(comb_data_df)
 
     axs[0].set_xlabel("App Class (Based on Invocation Count)")
     axs[0].set_xticklabels(["<1M", "1M-100M", ">100M"])
