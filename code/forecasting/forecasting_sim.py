@@ -42,6 +42,7 @@ class ForecastSimulation(SimulatorInterface):
         self.idletime_mode = data_mode == "idletime"
         self.ades_alpha = 0.5
         self.ades_beta = 0.5
+        self.func_mode = True if forecaster == "IceBreaker" else False
 
         print(num_past_elements)
 
@@ -106,6 +107,54 @@ class ForecastSimulation(SimulatorInterface):
         """
         if traces_df.shape[0] == 0:
             return traces_df
+
+        if self.func_mode:
+            # get each application
+            fcastmat = []
+            app_level_transformed_values = []
+            for curr_app in traces_df['HashApp'].unique():
+                curr_df = traces_df[traces_df['HashApp'] == curr_app]
+                per_app_transformed_values = [0]*len(curr_df.at[curr_df.index.tolist()[0], 'TransformedValues'])
+                for _, row in curr_df.iterrows():
+                    for i in range(len(row.TransformedValues)):
+                        per_app_transformed_values[i] = max(per_app_transformed_values[i], row.TransformedValues[i])
+                app_level_transformed_values.append(per_app_transformed_values)
+            for curr_app in traces_df['HashApp'].unique():
+                app_df = traces_df[traces_df['HashApp'] == curr_app]
+                forecasted_matrix = []   
+                # iterate over each function inside an app
+                for _, row in app_df.iterrows():
+                    # perform forecasting across all functions inside the application
+                    forecasted_mat = self.forecast_trace(row.TransformedValues,
+                                        self.forecaster, row.AverageMemUsage, row.ContainerInvocationsPerMin,
+                                        row.ExecDurations)
+                    # append both forecasted values at each index and future values at each index per function
+                    forecasted_matrix.append(forecasted_mat)
+                
+                app_forecasted_values = []
+                # outer loop for iterating over the number of times values are forecasted
+                for i in range(len(forecasted_matrix[0])):
+                    local_app_forecasted_values = []
+                    # inner loop for iterating over the forecast horizon
+                    for j in range(len(forecasted_matrix[0][0])):
+                        max_fcast_per_col = 0
+                        # inner most loop for iterating over all functions inside the app
+                        for k in range(len(forecasted_matrix)):
+                            # max value for a single function, at an index of the forecast horizon (e.g. 5)
+                            # and for an index among the total number of times forecast has happend e.g. 20035
+                            max_fcast_per_col = max(max_fcast_per_col, forecasted_matrix[k][i][j])
+                        local_app_forecasted_values.append(max_fcast_per_col)
+                    app_forecasted_values.append(local_app_forecasted_values)
+                fcastmat.append(app_forecasted_values)
+            all_apps = [app_name for app_name in traces_df['HashApp'].unique()]
+            new_df = pd.DataFrame()
+            new_df['HashApp'] = all_apps
+            new_df['ForecastedValues'] = fcastmat
+            new_df['ForecastedValues'] = new_df.ForecastedValues.apply(lambda x : np.array(x))
+            new_df['TransformedValues'] = app_level_transformed_values
+            new_df['Forecaster'] = self.forecaster
+            new_df.reset_index(drop=True, inplace=True)
+            return new_df
           
         traces_df["ForecastedValues"] = traces_df.apply(lambda x : self.forecast_trace(x.TransformedValues,
                                                             self.forecaster, x.AverageMemUsage, 

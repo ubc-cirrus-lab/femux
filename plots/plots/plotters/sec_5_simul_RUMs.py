@@ -30,7 +30,7 @@ END_INDEX = BLOCK_SIZE * 34
 
 inv_exec_path = data_dir + "app_total_inv_exec_{}_days.pickle"
 forecaster_template = (
-    "{}_markov_v3_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics"
+    "{}_kmeans_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics"
 )
 
 rum_vals = []
@@ -150,9 +150,9 @@ if __name__ == "__main__":
     file_desc = "FeMux_test"
 
     forecasters = [
-        "4_cs_markov_v3_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
-        "default_markov_v3_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
-        "4_wm_markov_v3_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
+        "4_cs_kmeans_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
+        "default_kmeans_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
+        "4_wm_kmeans_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
     ]
 
     plot_final(forecasters, data_desc)
@@ -164,7 +164,7 @@ if __name__ == "__main__":
         linestyle="--",
         zorder=0,
         alpha=0.25,
-        linewidth=2,
+    linewidth=2,
     )
     ax.plot(
         [xPoints["P"][1], xPoints["R"][1]],
@@ -258,7 +258,7 @@ if __name__ == "__main__":
         ]
     )
     ax.set_ylim(0, 450000000)
-    ax.set_xlim(0, 400)
+    ax.set_xlim(0, 600)
     ax.grid(True, which="both", axis="both", alpha=0.25)
     ax.yaxis.labelpad = 0
 

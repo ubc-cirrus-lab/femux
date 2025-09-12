@@ -77,8 +77,8 @@ markers = [
 
 def plot_final(forecasters, data_desc):
     #plot_faascache(axs[0])
-    plot_icebreaker(forecasters + ["10_min_keepalive", "IceBreaker"], data_desc, axs[1])
-    #plot_aquatope(forecasters + ["10_min_keepalive", "Aquatope"], data_desc, axs[2])
+    plot_icebreaker(forecasters + ["10_min_keepalive"], data_desc, axs[1])
+    plot_aquatope(forecasters + ["10_min_keepalive"], data_desc, axs[2])
 
 
 def plot_aquatope(forecasters, data_desc, ax):
@@ -473,9 +473,9 @@ if __name__ == "__main__":
     file_desc = "FeMux_test"
 
     forecasters = [
-        "4_cs_markov_v3_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
-        "default_markov_v3_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
-        "4_wm_markov_v3_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
+        "4_cs_kmeans_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
+        "default_kmeans_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
+        "4_wm_kmeans_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics",
     ]
 
     plot_final(forecasters, data_desc)

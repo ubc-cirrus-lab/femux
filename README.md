@@ -6,7 +6,8 @@ Our artifact includes the code necessary to reproduce all simulated results for 
 ## Setup Notes
 - We recommend using Ubuntu 20.04 or newer with at least 150GB of disk space, and Python +3.10 with the dependencies defined in `requirements.txt`. Further, we recommend configuring our scripts to run on 48 cores and 140GB of Memory to minimize runtime, but they are parameterizable to any number of cores--we set them to 16 core and 80GB by default.
  - Time estimates below are given on 16 core machines, where core count can be updated globally by changing `num_workers = 16` or by changing the parameter at the bottom of each parallelizable script.
-- We comment out Holt, Exponential Smoothing, and SETAR to significantly cut down forecasting simulation runtime which is the bottleneck for reproduction. Results do not change significantly as these forecasters are selected for under 5 percent of blocks.
+- We comment out Holt, Exponential Smoothing, and SETAR to significantly cut down forecasting simulation runtime which is the bottleneck for reproduction. Results do not change significantly as these forecasters are selected for under 5 percent of blocks. 
+ - To save more time, we also configure FFT to run on application-level traces which affects some of the final results. For our FeMux prototype, we use function-level traces for FFT and the IceBreaker comparison. This can be seen in the initialization function of `/code/forecasting/forecasting_sim.py`.
 - All scripts should be run from the directory they are defined in.
 
 ## Preprocessing
@@ -30,5 +31,5 @@ configured with the named features and forecasters that have already been extrac
 
 
 # Plotting Results
-1. Plotters are in `/plots/plots/plotters`, and all data in `/plots/data` can be unzipped using `/plots/setup.sh`.
-2. To use generated simulation results instead of those we provide, users can replace the files in `/plots/data` with those in `/data`
+1. Plotters are in `/plots/plots/plotters`, and data in `/plots/data` can be unzipped using `/plots/setup.sh`. 
+2. To use generated simulation results instead of those we provide, users can replace the files in `/plots/data` with those in `/data/azure`

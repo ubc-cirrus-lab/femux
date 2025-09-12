@@ -262,7 +262,7 @@ def calc_mem_alloc(num_actual_containers, num_predicted_containers, mem_usage, n
 if __name__ == '__main__':
     forecast_len = 1
     
-    forecasters = ["AR_10", "FFT_10", "MarkovChain", "10_min_keepalive", "5_min_keepalive", "IceBreaker"] #("ExpSmoothing", "Holt", "SETAR")
+    forecasters = ["AR_10", "FFT_10", "MarkovChain", "10_min_keepalive", "5_min_keepalive"] #("ExpSmoothing", "Holt", "SETAR")
     
     data_mode = "test"
     data_percentage = 100
