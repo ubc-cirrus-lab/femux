@@ -52,7 +52,7 @@ rum_vals = []
 bar_labels = []
 
 markers = [
-    "$SW$",
+    "$FM$",
     "v",
     ".",
     "$FC$",

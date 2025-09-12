@@ -76,7 +76,7 @@ def update_result_df(result_df, forecast_df, forecaster):
     dropped_df = result_df.dropna()
 
     if len(dropped_df) < len(result_df):
-        print("Dropped {} apps due to missing values in {}".format(len(result_df) - len(dropped_df), forecaster))
+        print("Dropped {} apps due to missing values".format(len(result_df) - len(dropped_df)))
         result_df = dropped_df
 
     
@@ -98,7 +98,7 @@ def update_dict(result_dict, new_vals, forecaster):
 
 def parse_size(df, mode, size):
     """mode: str
-    "test" or "train
+    "test" or "training"
     """
     
     with open(hashapp_path.format(size, mode), "rb") as f:

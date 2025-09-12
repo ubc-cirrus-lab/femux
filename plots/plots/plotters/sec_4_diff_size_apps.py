@@ -154,6 +154,6 @@ if __name__ == "__main__":
     print(comb_data_df)
 
     plt.tight_layout()
-    plt.savefig(save_path + "sec_4_diff_size_apps_v2.pdf")
+    plt.savefig(save_path + "sec_4_diff_size_apps.pdf")
 
     plt.close()

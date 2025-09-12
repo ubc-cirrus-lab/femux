@@ -16,18 +16,15 @@ COLD_START_DURATION = 0.808
 COLD_START_TIME_WEIGHT = 1
 WASTED_MEMORY_WEIGHT = 1 / 99.69
 
-file_name = save_path + "sec_6_forecaster_comp_v2.pdf"
+file_name = save_path + "sec_4_forecaster_comp.pdf"
 
 markers = [
     "$10$",
     "$5$",
     "$A$",
-    "$E$",
     "$F$",
-    "$H$",
     "$M$",
-    "$S$",
-    "$SW$",
+    "$FM$",
     "$PS$",
     "^",
     "d",
@@ -166,12 +163,12 @@ if __name__ == "__main__":
         "10_min_keepalive",
         "AR_10",
         #"ExpSmoothing",
-        "MarkovChain_v3",
+        "MarkovChain",
         #"SETAR",
         #"Holt",
         "FFT_10",
         #"Oracle",
-        "default_markov_v3_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics"
+        "default_kmeans_StandardScaler_femux_Density_Linearity_Stationarity_Harmonics"
     ]
 
     block_size = 504
