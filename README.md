@@ -28,8 +28,9 @@ execution times, invocation counts, and application memory: each of the files in
 ## Clustering Forecasters and Simulating Switching Performance
 `clustering_pipeline.py` combines the clustering, and simulated performance of the FeMux prototype 
 configured with the named features and forecasters that have already been extracted/simulated above (~1h).
-
+ - Users with more than 128 cores need to set the OPENBLAS_NUM_THREADS environment variable to a number lesser than 128
 
 # Plotting Results
 1. `/plots/setup.sh` copies over generated results from `/data/azure` to `/plots/data`, and additionally unzips the pre-generated data we provide. 
 2. Plotters are in `/plots/plots/plotters` and should be run within the directory. Each plotter has its corresponding plot output to a pdf file in `/plots/plots/output_plots`
+ - Each plotter (e.g., `/plots/plots/plotters/sec_4_diff_size_apps.py`) corresponds to a figure in the respective section of the paper, with a short description of the result in the filename.
