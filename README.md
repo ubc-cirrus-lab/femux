@@ -31,5 +31,5 @@ configured with the named features and forecasters that have already been extrac
 
 
 # Plotting Results
-1. Plotters are in `/plots/plots/plotters`, and data in `/plots/data` can be unzipped using `/plots/setup.sh`. 
-2. To use generated simulation results instead of those we provide, users can replace the files in `/plots/data` with those in `/data/azure`
+1. `/plots/setup.sh` copies over generated results from `/data/azure` to `/plots/data`, and additionally unzips the pre-generated data we provide. 
+2. Plotters are in `/plots/plots/plotters` and should be run within the directory. Each plotter has its corresponding plot output to a pdf file in `/plots/plots/output_plots`

@@ -9,15 +9,13 @@ from pathlib import Path
 data_dir = str(Path(__file__).parents[2] / "data") + "/"
 
 cs_wm_forecaster_path = data_dir + "_cold_starts_wasted_mem.pickle"
-hashapp_path = data_dir + "hashapps_by_size/{}_{}_apps.pickle"
+hashapp_path = data_dir + "train_test_split/{}_{}_apps.pickle"
 
 
 def gen_result_df(forecasters, data_desc, gen_skip=True):
     result_df = pd.DataFrame()
 
     for forecaster in forecasters:
-        print(forecaster)
-        
         data_path = cs_wm_forecaster_path.replace("/_cold_starts", "/{}/{}_cold_starts".format(data_desc, forecaster))
         forecaster_df = pd.read_pickle(data_path)
         forecaster_df = forecaster_df[['HashApp', 'NumColdStarts', 'NumInvocations', 'MemAllocated', 'MemoryUsed']]

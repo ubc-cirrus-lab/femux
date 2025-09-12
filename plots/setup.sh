@@ -1,13 +1,6 @@
-# check if venv directory exists
-if [ ! -d "venv" ]; then
-    echo "Creating virtual environment..."
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-else
-    echo "Virtual environment exists. Activating..."
-    source venv/bin/activate
-fi
+cp -r ../data/azure/results/* ./data/
+cp -r ../data/azure/train_test_split ./data/
+cp ../data/azure/preproc_data/app_total_inv_exec_12_days.pickle ./data/
 
 # unzip files
 # go inside each subdirectory of ./data and unzip the files inside

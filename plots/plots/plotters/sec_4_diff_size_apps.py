@@ -57,12 +57,12 @@ def plot_metric(forecasters, result_df, size):
 
 
 if __name__ == "__main__":
-    forecasters = ["AR", "Adaptive_FFT_10"]
+    forecasters = ["AR_10", "Adaptive_FFT_10"]
 
     block_size = 504
     percentage = 100
-    data_split = "train"
-    data_desc = "{}_{}_percent_{}".format(block_size, percentage, data_split)
+    data_split = "training"
+    data_desc = "{}_{}_percent_train".format(block_size, percentage)
 
     result_df = gen_result_df(forecasters, data_desc)
 
