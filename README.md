@@ -1,7 +1,7 @@
 Nima Nasiri, Nalin Munshi, Simon D Moser, Marius Pirvu, Vijay Sundaresan, Daryl Maier, Thatta Premnath, Norman Böwing, Sathish Gopalakrishnan, and Mohammad Shahrad, "In-Production Characterization of an Open Source Serverless Platform and New Scaling Strategies", 2026 ACM European Conference on Computer Systems (EuroSys '26).
 
 # Instructions on Generating Simulation-based Results
-Our artifact includes the code necessary to reproduce all simulated results for FeMux--eventually producing FeMux's results for Figures 7, 8, 10, and 11. 
+Our artifact includes the code necessary to reproduce all simulated results for FeMux--eventually producing FeMux's results for Figures 8, 11, and 12. 
 
 ## Setup Notes
 - We recommend using Ubuntu 20.04 or newer with at least 150GB of disk space, and Python +3.10 with the dependencies defined in `requirements.txt`. Further, we recommend configuring our scripts to run on 48 cores and 140GB of Memory to minimize runtime, but they are parameterizable to any number of cores--we set them to 16 core and 80GB by default.
