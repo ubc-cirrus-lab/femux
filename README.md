@@ -1,4 +1,6 @@
-Nima Nasiri, Nalin Munshi, Simon D Moser, Marius Pirvu, Vijay Sundaresan, Daryl Maier, Thatta Premnath, Norman Böwing, Sathish Gopalakrishnan, and Mohammad Shahrad, "In-Production Characterization of an Open Source Serverless Platform and New Scaling Strategies", 2026 ACM European Conference on Computer Systems (EuroSys '26).
+Nima Nasiri, Nalin Munshi, Simon D Moser, Marius Pirvu, Vijay Sundaresan, Daryl Maier, Thatta Premnath, Norman Böwing, Sathish Gopalakrishnan, and Mohammad Shahrad, "[In-Production Characterization of an Open Source Serverless Platform and New Scaling Strategies](https://cirrus.ece.ubc.ca/papers/eurosys26_femux.pdf)", 2026 ACM European Conference on Computer Systems (EuroSys '26).
+
+The traces from our paper are on a separate repo: [IBM Cloud Code Engine Traces](https://github.com/ubc-cirrus-lab/ibm-cloud-code-engine-traces)
 
 # Instructions on Generating Simulation-based Results
 Our artifact includes the code necessary to reproduce all simulated results for FeMux--eventually producing FeMux's results for Figures 8, 11, and 12. 
